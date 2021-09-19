@@ -4,13 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   OneToMany,
-  OneToOne,
 } from "typeorm";
 import { Curation } from "./Curation";
-import { UserLogin } from "./UserLogin";
 
 @Entity()
-export class UserProfile {
+export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -18,7 +16,13 @@ export class UserProfile {
   created_at: Date;
 
   @Column()
+  email: string;
+
+  @Column()
   username: string;
+
+  @Column()
+  password: string;
 
   @Column({ nullable: true })
   bio: string;
@@ -28,7 +32,4 @@ export class UserProfile {
 
   @OneToMany(() => Curation, (curation) => curation.created_by)
   curations: Curation;
-
-  @OneToOne(() => UserLogin, (userLogin) => userLogin.user_profile)
-  user_login: UserLogin;
 }

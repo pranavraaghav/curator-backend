@@ -22,13 +22,15 @@ export class Block {
   @Column()
   title: string;
 
-  @Column({ nullable:true })
+  @Column({ nullable: true })
   text: string;
 
-  @Column({ nullable:true })
+  @Column({ nullable: true })
   url: string;
 
-  @ManyToOne(() => Curation, (curation) => curation.blocks, { onDelete: 'CASCADE'})
+  @ManyToOne(() => Curation, (curation) => curation.blocks, {
+    onDelete: "CASCADE",
+  })
   curation: Curation;
 
   // TODO: Implement upvotes

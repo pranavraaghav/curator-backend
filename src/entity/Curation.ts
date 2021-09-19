@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Block } from "./Block";
-import { UserProfile } from "./UserProfile";
+import { User } from "./User";
 
 @Entity()
 export class Curation {
@@ -24,13 +24,14 @@ export class Curation {
   @Column()
   title: string;
 
-  @Column({ nullable:true })
+  @Column({ nullable: true })
   description: string;
 
-  @ManyToOne(() => UserProfile, (userProfile) => userProfile.curations)
-  created_by: UserProfile;
+  @ManyToOne(() => User, (user) => user.curations)
+  created_by: User;
 
   @OneToMany(() => Block, (block) => block.curation)
   blocks: Block;
+
   // TODO: Implement upvotes
 }
