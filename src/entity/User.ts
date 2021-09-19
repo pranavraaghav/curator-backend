@@ -4,8 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   OneToMany,
+  BeforeInsert,
+  BeforeUpdate,
 } from "typeorm";
 import { Curation } from "./Curation";
+import * as bcrypt from "bcrypt";
 
 @Entity()
 export class User {
@@ -32,4 +35,13 @@ export class User {
 
   @OneToMany(() => Curation, (curation) => curation.created_by)
   curations: Curation;
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 12)
+  }
+
+  async validatePassword(password: string) {
+    return await bcrypt.compare(password, this.password)
+  }
 }
