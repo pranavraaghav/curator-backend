@@ -1,8 +1,7 @@
 import express from "express";
-import { Request, Response } from "express";
 import * as dotenv from "dotenv";
 import { createConnection } from "typeorm";
-import { AppRoutes } from "./routes";
+import { router } from "./routes/index";
 
 dotenv.config();
 const PORT = process.env.PORT || 8080;
@@ -13,20 +12,8 @@ createConnection()
 
     app.use(express.json());
 
-    // register all routes
-    AppRoutes.forEach((route) => {
-      app[route.method](
-        "/api" + route.path,
-        (request: Request, response: Response, next: Function) => {
-          route
-            .action(request, response)
-            .then(() => next)
-            .catch((err: any) => next(err));
-        }
-      );
-    });
+    app.use("/api", router);
 
-    // run app
     app.listen(PORT);
 
     console.log(`Application running on port ${PORT}`);
