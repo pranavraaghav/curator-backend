@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
-import Joi from "joi";
+import Joi, { object } from "joi";
 import { User } from "../entity/User";
 
 // TODO: Implement password and password hashing
@@ -46,10 +46,15 @@ export async function userPostCreateAction(
   user.password = password;
 
   try {
-    response
-      .status(201)
-      .send(await getManager().getRepository(User).save(user));
+    var createdUser = await getManager().getRepository(User).save(user)
   } catch (error) {
     response.status(500).send(error);
+    return
   }
+
+  // TODO: send JWT here 
+  response.status(201).send({
+    message: "User created successfully",
+    id: createdUser.id // for development purposes
+  })
 }
