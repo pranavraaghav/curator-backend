@@ -24,7 +24,7 @@ export class Curation {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ nullable:true })
   description: string;
 
   @ManyToOne(() => UserProfile, (userProfile) => userProfile.curations)

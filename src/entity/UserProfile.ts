@@ -20,10 +20,10 @@ export class UserProfile {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   bio: string;
 
-  @Column()
+  @Column({ nullable: true })
   imageurl: string;
 
   @OneToMany(() => Curation, (curation) => curation.created_by)
