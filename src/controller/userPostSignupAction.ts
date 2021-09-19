@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
-import Joi, { object } from "joi";
+import Joi from "joi";
+import * as dotenv from "dotenv";
 import { User } from "../entity/User";
+import * as jwt from "jsonwebtoken";
+
+dotenv.config()
 
 // TODO: Implement password and password hashing
 
-export async function userPostCreateAction(
+export async function userPostSignupAction(
   request: Request,
   response: Response
 ) {
@@ -52,9 +56,21 @@ export async function userPostCreateAction(
     return
   }
 
-  // TODO: send JWT here 
+  // jwt 
+  try {
+    var secret: string = process.env.SECRET! || 'secret'
+  } catch (error) {
+    response.status(500).send(error)
+    console.log("Secret provided in .env was not a string")
+    return
+  }
+
+  const token = jwt.sign({ id: createdUser.id}, secret, {expiresIn: "30d"})
+
   response.status(201).send({
     message: "User created successfully",
-    id: createdUser.id // for development purposes
+    id: createdUser.id, // for development purposes
+    jwt: token,
+    token_type: "Bearer"
   })
 }

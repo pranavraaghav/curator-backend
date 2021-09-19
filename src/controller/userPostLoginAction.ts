@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import Joi from "joi";
+import * as jwt from "jsonwebtoken";
 import { User } from "../entity/User";
 
-export async function userPostLogin(
+export async function userPostLoginAction(
   request: Request,
   response: Response
 ) {
@@ -44,8 +45,20 @@ export async function userPostLogin(
     return
   }
 
+  // jwt 
+  try {
+    var secret: string = process.env.SECRET! || 'secret'
+  } catch (error) {
+    response.status(500).send(error)
+    console.log("Secret provided in .env was not a string")
+    return
+  }
+
+  const token = jwt.sign({ id: user.id}, secret, {expiresIn: "30d"})
+
   response.status(200).send({
-      message: "Validation successfull"
-      // TODO: JWT stuff
+      message: "Validation successfull",
+      jwt: token,
+      token_type: "Bearer"
   })
 }

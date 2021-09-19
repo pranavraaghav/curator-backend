@@ -10,7 +10,7 @@ export async function curationPostCreateAction(
 ) {
   // request validation
   const { value, error } = Joi.object({
-    user_id: Joi.string().uuid().required(),
+    verified_user_id: Joi.string().uuid().required(),
     title: Joi.string().required(),
     description: Joi.string(),
   }).validate(request.body);

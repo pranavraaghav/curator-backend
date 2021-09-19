@@ -1,13 +1,13 @@
-import { request, response, Router } from "express";
-import { userPostCreateAction } from "../controller/userPostCreateAction";
-import { userPostLogin } from "../controller/userPostLogin";
+import { Router } from "express";
+import { userPostSignupAction } from "../controller/userPostSignupAction";
+import { userPostLoginAction } from "../controller/userPostLoginAction";
 
 export const router = Router();
 
-router.post("/", (request, response) => {
-  userPostCreateAction(request, response);
+router.post("/signup", (request, response) => {
+  userPostSignupAction(request, response);
 });
 
 router.post("/login", (request, response) => {
-  userPostLogin(request, response);
+  userPostLoginAction(request, response);
 })
