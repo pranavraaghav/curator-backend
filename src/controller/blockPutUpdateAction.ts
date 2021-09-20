@@ -12,14 +12,14 @@ export async function blockPutUpdateAction(
     verified_user_id: Joi.string().uuid().required(),
     block_id: Joi.string().uuid().required(),
     title: Joi.string(),
-    text: Joi.string(),
+    description: Joi.string(),
   }).validate(request.body);
   if (error != null) {
     response.status(400).send(error);
     return;
   }
 
-  const { verified_user_id, block_id, title, text } = value;
+  const { verified_user_id, block_id, title, description } = value;
 
   try {
     var block = await getManager()
@@ -49,7 +49,7 @@ export async function blockPutUpdateAction(
 
   // update values
   block.title = title || block.title;
-  block.text = text || block.text;
+  block.description = description || block.description;
 
   try {
     var updatedBlock = await getManager().getRepository(Block).save(block);
@@ -62,7 +62,7 @@ export async function blockPutUpdateAction(
     message: "Block updated successfully",
     id: updatedBlock.id,
     title: updatedBlock.title,
-    text: updatedBlock.text,
+    description: updatedBlock.description,
   };
 
   response.status(200).send(responseObject);

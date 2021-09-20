@@ -13,7 +13,7 @@ export async function blockPostCreateAction(
     verified_user_id: Joi.string().uuid().required(),
     curation_id: Joi.string().uuid().required(),
     title: Joi.string().required(),
-    text: Joi.string(),
+    description: Joi.string(),
     url: Joi.string(),
   }).validate(request.body);
 
@@ -21,7 +21,7 @@ export async function blockPostCreateAction(
     response.status(400).send(error);
     return;
   }
-  const { verified_user_id, curation_id, title, text, url } = value;
+  const { verified_user_id, curation_id, title, description, url } = value;
 
   try {
     // TODO: Do a left join to get user deets and validate with jwt
@@ -53,7 +53,7 @@ export async function blockPostCreateAction(
   const block = new Block();
   block.curation = curation;
   block.title = title;
-  block.text = text || null;
+  block.description = description || null;
   block.url = url || null;
 
   try {
@@ -67,7 +67,7 @@ export async function blockPostCreateAction(
     message: "success",
     id: createdBlock.id,
     title: createdBlock.title,
-    text: createdBlock.text,
+    description: createdBlock.description,
     url: createdBlock.url,
     curation_id: createdBlock.curation.id,
   };

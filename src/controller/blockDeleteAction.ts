@@ -53,7 +53,7 @@ export async function blockDeleteAction(request: Request, response: Response) {
     message: "Block deleted successfully",
     id: deletedBlock.id,
     title: deletedBlock.title,
-    text: deletedBlock.text,
+    description: deletedBlock.description,
   };
 
   response.status(200).send(responseObject);

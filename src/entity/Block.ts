@@ -23,7 +23,7 @@ export class Block {
   title: string;
 
   @Column({ nullable: true })
-  text: string;
+  description: string;
 
   @Column({ nullable: true })
   url: string;
@@ -32,6 +32,4 @@ export class Block {
     onDelete: "CASCADE",
   })
   curation: Curation;
-
-  // TODO: Implement upvotes
 }
