@@ -15,6 +15,7 @@ export async function blockPostBulkCreateAction(
     blocks: Joi.array().items(
       Joi.object().keys({
         title: Joi.string().required(),
+        index: Joi.number().required(),
         description: Joi.string(),
         url: Joi.string(),
       })

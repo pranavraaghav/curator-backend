@@ -7,8 +7,8 @@ import { verifyToken } from "../middleware/jwt";
 
 export const router = Router();
 
-router.post("/", verifyToken, (request, response) => {
-  blockPostCreateAction(request, response);
+router.post("/bulk", verifyToken, (request, response) => {
+  blockPostBulkCreateAction(request, response);
 });
 
 router.put("/", verifyToken, (request, response) => {
@@ -19,6 +19,10 @@ router.delete("/", verifyToken, (request, response) => {
   blockDeleteAction(request, response);
 });
 
-router.post("/bulk", verifyToken, (request, response) => {
-  blockPostBulkCreateAction(request, response);
+/**
+ * Deprecated
+ * User /bulk instead
+ */
+router.post("/", verifyToken, (request, response) => {
+  blockPostCreateAction(request, response);
 });

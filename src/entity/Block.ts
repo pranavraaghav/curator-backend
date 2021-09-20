@@ -22,6 +22,11 @@ export class Block {
   @Column()
   title: string;
 
+  @Column({
+    default: 0,
+  })
+  index: number;
+
   @Column({ nullable: true })
   description: string;
 
