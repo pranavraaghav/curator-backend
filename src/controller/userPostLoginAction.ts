@@ -38,27 +38,27 @@ export async function userPostLoginAction(
   }
 
   // validate
-  if(await user.validatePassword(password) === false) {
+  if ((await user.validatePassword(password)) === false) {
     response.status(400).send({
-        message: "Incorrect password"
+      message: "Incorrect password",
     });
-    return
+    return;
   }
 
-  // jwt 
+  // jwt
   try {
-    var secret: string = process.env.SECRET! || 'secret'
+    var secret: string = process.env.SECRET! || "secret";
   } catch (error) {
-    response.status(500).send(error)
-    console.log("Secret provided in .env was not a string")
-    return
+    response.status(500).send(error);
+    console.log("Secret provided in .env was not a string");
+    return;
   }
 
-  const token = jwt.sign({ id: user.id}, secret, {expiresIn: "30d"})
+  const token = jwt.sign({ id: user.id }, secret, { expiresIn: "30d" });
 
   response.status(200).send({
-      message: "Validation successfull",
-      jwt: token,
-      token_type: "Bearer"
-  })
+    message: "Validation successfull",
+    jwt: token,
+    token_type: "Bearer",
+  });
 }

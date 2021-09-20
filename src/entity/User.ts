@@ -38,10 +38,10 @@ export class User {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 12)
+    this.password = await bcrypt.hash(this.password, 12);
   }
 
   async validatePassword(password: string) {
-    return await bcrypt.compare(password, this.password)
+    return await bcrypt.compare(password, this.password);
   }
 }

@@ -19,10 +19,10 @@ export async function curationPostCreateAction(
     return;
   }
 
-  const { user_id, title, description } = value;
+  const { verified_user_id, title, description } = value;
 
   try {
-    var user = await getManager().getRepository(User).findOne(user_id);
+    var user = await getManager().getRepository(User).findOne(verified_user_id);
     if (!user) {
       response.status(400).json({
         message: "Invalid user id",
@@ -40,10 +40,20 @@ export async function curationPostCreateAction(
   curation.description = description || null;
 
   try {
-    response
-      .status(200)
-      .send(await getManager().getRepository(Curation).save(curation));
+    var createdCuration = await getManager()
+      .getRepository(Curation)
+      .save(curation);
   } catch (error) {
     response.status(500).send(error);
+    return;
   }
+
+  const responseObject = {
+    message: "success",
+    id: createdCuration.id,
+    title: createdCuration.title,
+    description: createdCuration.description,
+  };
+
+  response.status(201).send(responseObject);
 }

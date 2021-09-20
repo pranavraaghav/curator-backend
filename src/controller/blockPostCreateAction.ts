@@ -10,6 +10,7 @@ export async function blockPostCreateAction(
 ) {
   // request validation
   const { value, error } = Joi.object({
+    verified_user_id: Joi.string().uuid().required(),
     curation_id: Joi.string().uuid().required(),
     title: Joi.string().required(),
     text: Joi.string(),
@@ -20,13 +21,16 @@ export async function blockPostCreateAction(
     response.status(400).send(error);
     return;
   }
-  const { curation_id, title, text, url } = value;
+  const { verified_user_id, curation_id, title, text, url } = value;
 
   try {
     // TODO: Do a left join to get user deets and validate with jwt
     var curation = await getManager()
       .getRepository(Curation)
-      .findOne(curation_id);
+      .createQueryBuilder("curation")
+      .leftJoinAndSelect("curation.created_by", "created_by")
+      .where("curation.id = :curation_id", { curation_id: curation_id })
+      .getOne();
     if (!curation) {
       response.status(400).json({
         message: "Invalid curation id",
@@ -38,6 +42,13 @@ export async function blockPostCreateAction(
     return;
   }
 
+  // Validate correct user
+  if (curation.created_by.id != verified_user_id) {
+    response.status(400).json({
+      message: "Only creator of curation can add blocks",
+    });
+    return;
+  }
   // creating new entry
   const block = new Block();
   block.curation = curation;
@@ -46,8 +57,20 @@ export async function blockPostCreateAction(
   block.url = url || null;
 
   try {
-    response.send(await getManager().getRepository(Block).save(block));
+    var createdBlock = await getManager().getRepository(Block).save(block);
   } catch (error) {
     response.status(500).send(error);
+    return;
   }
+
+  const responseObject = {
+    message: "success",
+    id: createdBlock.id,
+    title: createdBlock.title,
+    text: createdBlock.text,
+    url: createdBlock.url,
+    curation_id: createdBlock.curation.id,
+  };
+
+  response.status(201).send(responseObject);
 }

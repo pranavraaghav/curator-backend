@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 import { User } from "../entity/User";
 import * as jwt from "jsonwebtoken";
 
-dotenv.config()
+dotenv.config();
 
 // TODO: Implement password and password hashing
 
@@ -50,27 +50,26 @@ export async function userPostSignupAction(
   user.password = password;
 
   try {
-    var createdUser = await getManager().getRepository(User).save(user)
+    var createdUser = await getManager().getRepository(User).save(user);
   } catch (error) {
     response.status(500).send(error);
-    return
+    return;
   }
 
-  // jwt 
+  // jwt
   try {
-    var secret: string = process.env.SECRET! || 'secret'
+    var secret: string = process.env.SECRET! || "secret";
   } catch (error) {
-    response.status(500).send(error)
-    console.log("Secret provided in .env was not a string")
-    return
+    response.status(500).send(error);
+    console.log("Secret provided in .env was not a string");
+    return;
   }
 
-  const token = jwt.sign({ id: createdUser.id}, secret, {expiresIn: "30d"})
+  const token = jwt.sign({ id: createdUser.id }, secret, { expiresIn: "30d" });
 
   response.status(201).send({
     message: "User created successfully",
-    id: createdUser.id, // for development purposes
     jwt: token,
-    token_type: "Bearer"
-  })
+    token_type: "Bearer",
+  });
 }
