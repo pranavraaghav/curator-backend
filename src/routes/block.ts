@@ -2,6 +2,7 @@ import { Router } from "express";
 import { blockDeleteAction } from "../controller/blockDeleteAction";
 import { blockPostBulkCreateAction } from "../controller/blockPostBulkCreateAction";
 import { blockPostCreateAction } from "../controller/blockPostCreateAction";
+import { blockReorderAction } from "../controller/blockPutReorderAction";
 import { blockPutUpdateAction } from "../controller/blockPutUpdateAction";
 import { verifyToken } from "../middleware/jwt";
 
@@ -9,6 +10,10 @@ export const router = Router();
 
 router.post("/bulk", verifyToken, (request, response) => {
   blockPostBulkCreateAction(request, response);
+});
+
+router.put("/reorder", verifyToken, (request, response) => {
+  blockReorderAction(request, response);
 });
 
 router.put("/", verifyToken, (request, response) => {
