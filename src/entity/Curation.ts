@@ -30,8 +30,10 @@ export class Curation {
   @ManyToOne(() => User, (user) => user.curations)
   created_by: User;
 
-  @OneToMany(() => Block, (block) => block.curation)
-  blocks: Block;
+  @OneToMany(() => Block, (block) => block.curation, {
+    cascade: true,
+  })
+  blocks: Block[];
 
   // TODO: Implement upvotes
 }

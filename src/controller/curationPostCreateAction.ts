@@ -3,6 +3,7 @@ import { getManager } from "typeorm";
 import Joi from "joi";
 import { User } from "../entity/User";
 import { Curation } from "../entity/Curation";
+import { Block } from "../entity/Block";
 
 export async function curationPostCreateAction(
   request: Request,
@@ -13,13 +14,20 @@ export async function curationPostCreateAction(
     verified_user_id: Joi.string().uuid().required(),
     title: Joi.string().required(),
     description: Joi.string(),
+    blocks: Joi.array().items(
+      Joi.object({
+        title: Joi.string().required(),
+        description: Joi.string(),
+        url: Joi.string(),
+      })
+    ),
   }).validate(request.body);
   if (error != null) {
     response.status(400).send(error);
     return;
   }
 
-  const { verified_user_id, title, description } = value;
+  const { verified_user_id, title, description, blocks } = value;
 
   try {
     var user = await getManager().getRepository(User).findOne(verified_user_id);
@@ -38,6 +46,23 @@ export async function curationPostCreateAction(
   curation.created_by = user;
   curation.title = title;
   curation.description = description || null;
+
+  if (blocks) {
+    let createdBlocks: Block[] = [];
+    // Index all blocks
+    blocks.forEach((item: Block, i: number) => {
+      const { title, description, url } = item;
+
+      const block = new Block();
+      block.title = title;
+      block.description = description;
+      block.url = url;
+      block.index = i;
+
+      createdBlocks.push(block);
+    });
+    curation.blocks = createdBlocks;
+  }
 
   try {
     var createdCuration = await getManager()

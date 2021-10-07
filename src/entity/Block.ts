@@ -13,15 +13,13 @@ export class Block {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
-
   @Column()
   title: string;
 
+  /**
+   * index might be redundant since curation uses an array of blocks
+   * and somehow the order of the array is preserved always?
+   */
   @Column({
     default: 0,
   })

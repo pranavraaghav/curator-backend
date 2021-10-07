@@ -7,7 +7,7 @@ import { curationGetAction } from "../controller/curationGetAction";
 
 export const router = Router();
 
-router.get("/:curation_id", (request, response) => {
+router.get("/", (request, response) => {
   curationGetAction(request, response);
 });
 
