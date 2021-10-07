@@ -8,7 +8,7 @@ export async function curationGetAction(request: Request, response: Response) {
   // request validation
   const { value, error } = Joi.object({
     curation_id: Joi.string().uuid().required(),
-  }).validate(request.params);
+  }).validate(request.body);
   if (error != null) {
     response.status(400).send(error);
     return;
