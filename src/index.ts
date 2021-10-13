@@ -3,6 +3,10 @@ import * as dotenv from "dotenv";
 import { createConnection } from "typeorm";
 import { router } from "./routes/index";
 
+import * as swaggerUI from "swagger-ui-express";
+import * as YAML from "yamljs";
+const SWAGGER_DOC = YAML.load(__dirname + "/../swagger.yml");
+
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 
@@ -11,6 +15,8 @@ createConnection()
     const app = express();
 
     app.use(express.json());
+
+    app.use("/", swaggerUI.serve, swaggerUI.setup(SWAGGER_DOC));
 
     app.use("/api", router);
 
