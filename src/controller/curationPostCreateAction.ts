@@ -11,7 +11,7 @@ export async function curationPostCreateAction(
 ) {
   // request validation
   const { value, error } = Joi.object({
-    verified_user_id: Joi.string().uuid().required(),
+    user_id: Joi.string().uuid().required(),
     title: Joi.string().required(),
     description: Joi.string(),
     blocks: Joi.array().items(
@@ -27,10 +27,10 @@ export async function curationPostCreateAction(
     return;
   }
 
-  const { verified_user_id, title, description, blocks } = value;
+  const { user_id, title, description, blocks } = value;
 
   try {
-    var user = await getManager().getRepository(User).findOne(verified_user_id);
+    var user = await getManager().getRepository(User).findOne(user_id);
     if (!user) {
       response.status(400).json({
         message: "Invalid user id",
@@ -74,7 +74,7 @@ export async function curationPostCreateAction(
   }
 
   const responseObject = {
-    message: "success",
+    message: "Curation Created Successfully",
     id: createdCuration.id,
     title: createdCuration.title,
     description: createdCuration.description,

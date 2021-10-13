@@ -38,10 +38,10 @@ export const verifyToken = (
     /**
      * if the verifyToken middleware is used in a route
      * the request.body in the next function (after middleware)
-     * will contain a key "verified_user_id" which contains
+     * will contain a key "user_id" which contains
      * the id of User which was extracted from jwt
      */
-    request.body.verified_user_id = payload.id;
+    request.body.user_id = payload.id;
     next();
   } catch (error) {
     response.status(500).send({

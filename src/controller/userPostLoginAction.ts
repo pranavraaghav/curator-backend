@@ -27,8 +27,8 @@ export async function userPostLoginAction(
       .where("user.username = :username", { username: username })
       .getOne();
     if (!user) {
-      response.status(404).send({
-        message: "username does not exist",
+      response.status(400).send({
+        message: "Username or password is incorrect",
       });
       return;
     }
@@ -40,7 +40,7 @@ export async function userPostLoginAction(
   // validate
   if ((await user.validatePassword(password)) === false) {
     response.status(400).send({
-      message: "Incorrect password",
+      message: "Username or password is incorrect",
     });
     return;
   }

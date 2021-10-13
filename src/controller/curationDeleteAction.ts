@@ -9,7 +9,7 @@ export async function curationDeleteAction(
 ) {
   // request validation
   const { value, error } = Joi.object({
-    verified_user_id: Joi.string().uuid().required(),
+    user_id: Joi.string().uuid().required(),
     curation_id: Joi.string().uuid().required(),
   }).validate(request.body);
   if (error != null) {
@@ -17,7 +17,7 @@ export async function curationDeleteAction(
     return;
   }
 
-  const { verified_user_id, curation_id } = value;
+  const { user_id, curation_id } = value;
 
   try {
     var curation = await getManager()
@@ -38,7 +38,7 @@ export async function curationDeleteAction(
     return;
   }
 
-  if (curation.created_by.id != verified_user_id) {
+  if (curation.created_by.id != user_id) {
     response.status(403).send({
       message: "Curation can only be deleted by owner",
     });
