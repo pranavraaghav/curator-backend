@@ -1,0 +1,392 @@
+openapi: "3.0.0"
+
+info:
+  title: Curator
+  version: "1.0"
+
+servers:
+  - url: http://curator.navboi.tech/api/
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /user/signup:
+    post:
+      tags:
+        - "User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: smartfellow@gmail.com
+                username:
+                  type: string
+                  example: smartfellow
+                password:
+                  type: string
+                  example: supersecurepassword
+              required:
+                - "email"
+                - "username"
+                - "password"
+      responses:
+        "201":
+          description: Created new user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User created successfully"
+                  jwt:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.1261c2VySWQiOiIzYTBmNmJkZC05M2RiLTRlZmYtYTUxNC0xNTdiYmUyMGE0MDAiLCJpYXQiOjE2MjUzNzkzMDIsImV4cCI6MTYyNTQ2NTcwMn0.bvcUH4ooUnZOCC7y1NN6W-yU0kb9W_7hcNyb084stag
+                  token_type:
+                    type: string
+                    example: Bearer
+        "403":
+          description: "username taken"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "username taken"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal server error"
+  /user/login:
+    post:
+      tags:
+        - "User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: smartfellow
+                password:
+                  type: string
+                  example: supersecurepassword
+              required:
+                - "username"
+                - "password"
+      responses:
+        "200":
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged in successfully"
+                  jwt:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.1261c2VySWQiOiIzYTBmNmJkZC05M2RiLTRlZmYtYTUxNC0xNTdiYmUyMGE0MDAiLCJpYXQiOjE2MjUzNzkzMDIsImV4cCI6MTYyNTQ2NTcwMn0.bvcUH4ooUnZOCC7y1NN6W-yU0kb9W_7hcNyb084stag
+                  token_type:
+                    type: string
+                    example: Bearer
+        "400":
+          description: "User not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Username or password is incorrect"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal server error"
+
+  /curation:
+    post:
+      tags:
+        - "Curation"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: This will be the title of the curation
+                description:
+                  type: string
+                  example: This will talk more about the curation
+                blocks:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                        example: This will be the title of the curation
+                      description:
+                        type: string
+                        example: This will talk more about the curation
+                      url:
+                        type: string
+                        example: https://linktowebsite.com/coolvideo
+              required:
+                - "curation_id"
+                - "title"
+                - "blocks"
+      responses:
+        "201":
+          description: Curation created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation created successfully"
+                  id:
+                    type: string
+                    example: 1231e386-5af5-426c-9118-5998d30c61c4
+                  title:
+                    type: string
+                    example: This will be the title of the curation
+                  description:
+                    type: string
+                    example: This will talk more about the curation
+        "400":
+          description: Invalid information given
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid information given"
+    put:
+      tags:
+        - "Curation"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                curation_id:
+                  type: string
+                  example: 1231e386-5af5-426c-9118-5998d30c61c4
+                title:
+                  type: string
+                  example: This will be the title of the curation
+                description:
+                  type: string
+                  example: This will talk more about the curation
+                blocks:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                        example: This will be the title of the curation
+                      description:
+                        type: string
+                        example: This will talk more about the curation
+                      url:
+                        type: string
+                        example: https://linktowebsite.com/coolvideo
+              required:
+                - "curation_id"
+                - "title"
+                - "blocks"
+      responses:
+        "200":
+          description: Curation updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation updated successfully"
+                  id:
+                    type: string
+                    example: 1231e386-5af5-426c-9118-5998d30c61c4
+                  title:
+                    type: string
+                    example: This will be the title of the curation
+                  description:
+                    type: string
+                    example: This will talk more about the curation
+        "404":
+          description: Curation does not exist, check provided id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation does not exist, check provided id"
+        "403":
+          description: Curation can only be modified by owner
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation can only be modified by owner"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+        - "Curation"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                curation_id:
+                  type: string
+                  example: 1231e386-5af5-426c-9118-5998d30c61c4
+              required:
+                - "curation_id"
+      responses:
+        "200":
+          description: Curation deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation deleted successfully"
+                  title:
+                    type: string
+                    example: This will be the title of the curation
+                  description:
+                    type: string
+                    example: This will talk more about the curation
+        "404":
+          description: Curation does not exist, check provided id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation does not exist, check provided id"
+        "403":
+          description: Curation can only be deleted by owner
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation can only be deleted by owner"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+    get:
+      tags:
+        - "Curation"
+      parameters:
+        - in: query
+          name: curation_id
+          schema:
+            type: string
+            example: 1231e386-5af5-426c-9118-5998d30c61c4
+          required: true
+      responses:
+        "200":
+          description: "Found curation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 1231e386-5af5-426c-9118-5998d30c61c4
+                  created_at:
+                    type: string
+                    example: "2021-10-13T12:34:08.634Z"
+                  title:
+                    type: string
+                    example: This will be the title of the curation
+                  description:
+                    type: string
+                    example: This will talk more about the curation
+                  blocks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: This will be the title of the curation
+                        description:
+                          type: string
+                          example: This will talk more about the curation
+                        url:
+                          type: string
+                          example: http://linktowebsite.com/coolvideo

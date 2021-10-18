@@ -10,7 +10,7 @@ export async function curationPutUpdateAction(
 ) {
   // request validation
   const { value, error } = Joi.object({
-    verified_user_id: Joi.string().uuid().required(),
+    user_id: Joi.string().uuid().required(),
     curation_id: Joi.string().uuid().required(),
     title: Joi.string(),
     description: Joi.string(),
@@ -26,7 +26,7 @@ export async function curationPutUpdateAction(
     response.status(400).send(error);
     return;
   }
-  const { verified_user_id, curation_id, title, description, blocks } = value;
+  const { user_id, curation_id, title, description, blocks } = value;
 
   // Fetch Curation
   try {
@@ -45,7 +45,7 @@ export async function curationPutUpdateAction(
       return;
     }
 
-    if (curation.created_by.id != verified_user_id) {
+    if (curation.created_by.id != user_id) {
       response.status(403).send({
         message: "Curation can only be modified by owner",
       });
