@@ -16,9 +16,9 @@ createConnection()
 
     app.use(express.json());
 
-    app.use("/", swaggerUI.serve, swaggerUI.setup(SWAGGER_DOC));
-
     app.use("/api", router);
+
+    app.use("/", swaggerUI.serve, swaggerUI.setup(SWAGGER_DOC));
 
     app.listen(PORT);
 
