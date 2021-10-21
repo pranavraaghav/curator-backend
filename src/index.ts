@@ -18,7 +18,7 @@ createConnection()
 
     app.use("/api", router);
 
-    app.use("/", swaggerUI.serve, swaggerUI.setup(SWAGGER_DOC));
+    app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(SWAGGER_DOC));
 
     app.listen(PORT);
 
