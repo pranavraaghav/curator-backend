@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "98393110-8a39-41f8-986c-f27aa0d56509",
+		"_postman_id": "0b1978f6-0a62-426e-b063-5ae220d1e94f",
 		"name": "curator",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,7 +10,25 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"testuser2\",\n    \"email\":\"testuser@gmail.com\",\n    \"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user/signup",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				}
 			},
 			"response": []
 		},
@@ -78,7 +96,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"curation_id\":\"7a8b1ec2-599e-46f5-a557-c6c133dbbbc6\",\r\n    \"title\":\"updated\",\r\n    \"blocks\":[\r\n        {\r\n            \"title\":\"Updated First\",\r\n            \"url\":\"{{$randomImageUrl}}\",\r\n            \"description\":\"{{$randomLoremSentence}}\"\r\n        },\r\n        {\r\n            \"title\":\"Updated Second\",\r\n            \"url\":\"{{$randomImageUrl}}\",\r\n            \"description\":\"{{$randomLoremSentence}}\"\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"curation_id\":\"{{curation_id}}\",\r\n    \"title\":\"updated\",\r\n    \"blocks\":[\r\n        {\r\n            \"title\":\"Updated First\",\r\n            \"url\":\"{{$randomImageUrl}}\",\r\n            \"description\":\"{{$randomLoremSentence}}\"\r\n        },\r\n        {\r\n            \"title\":\"Updated Second\",\r\n            \"url\":\"{{$randomImageUrl}}\",\r\n            \"description\":\"{{$randomLoremSentence}}\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -100,29 +118,23 @@
 		},
 		{
 			"name": "Get a Curation",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"curation_id\":\"8cd42bae-1d6f-4406-becf-1e0bf42457ce\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{base_url}}/curation/",
+					"raw": "{{base_url}}/curation/?curation_id={{curation_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"curation",
 						""
+					],
+					"query": [
+						{
+							"key": "curation_id",
+							"value": "{{curation_id}}"
+						}
 					]
 				}
 			},
@@ -150,7 +162,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"curation_id\":\"7a8b1ec2-599e-46f5-a557-c6c133dbbbc6\"\r\n}",
+					"raw": "{\r\n    \"curation_id\":\"{{curation_id}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -165,6 +177,80 @@
 					"path": [
 						"curation",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like a Curation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"curation_id\":\"{{curation_id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/curation/like",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"curation",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unliked a Curation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"curation_id\":\"{{curation_id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/curation/unlike",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"curation",
+						"unlike"
 					]
 				}
 			},
@@ -199,6 +285,10 @@
 		{
 			"key": "jwt",
 			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNmMjkxN2NmLWYyOGYtNGU3Ny05NDg2LTNmNTI1MDNhZmY3NCIsImlhdCI6MTYzMzYwNDI2NSwiZXhwIjoxNjM2MTk2MjY1fQ.YMWwSjDoYXtXmNOmjo5KWsOmb3YxSzloWVXEkMaVhjQ"
+		},
+		{
+			"key": "curation_id",
+			"value": "9b7080de-8855-4194-9d71-b188a0083963"
 		}
 	]
 }
