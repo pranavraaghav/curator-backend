@@ -390,3 +390,81 @@ paths:
                         url:
                           type: string
                           example: http://linktowebsite.com/coolvideo
+  /curation/like:
+    post:
+      tags:
+        - "Curation"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                curation_id:
+                  type: string
+                  example: 1231e386-5af5-426c-9118-5998d30c61c4
+              required:
+                - "curation_id"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "success"
+        "400":
+          description: curation can only be liked once
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "curation can only be liked once"
+  /curation/unlike:
+    post:
+      tags:
+        - "Curation"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                curation_id:
+                  type: string
+                  example: 1231e386-5af5-426c-9118-5998d30c61c4
+              required:
+                - "curation_id"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "success"
+        "400":
+          description: Curation was not previously liked by user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Curation was not previously liked by user "
