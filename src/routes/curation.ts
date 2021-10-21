@@ -4,6 +4,8 @@ import { curationDeleteAction } from "../controller/curationDeleteAction";
 import { curationPostCreateAction } from "../controller/curationPostCreateAction";
 import { curationPutUpdateAction } from "../controller/curationPutUpdateAction";
 import { curationGetAction } from "../controller/curationGetAction";
+import { curationLikeAction } from "../controller/curationLikeAction";
+import { curationUnlikeAction } from "../controller/curationUnlikeAction";
 
 export const router = Router();
 
@@ -21,4 +23,12 @@ router.put("/", verifyToken, (request, response) => {
 
 router.delete("/", verifyToken, (request, response) => {
   curationDeleteAction(request, response);
+});
+
+router.post("/like", verifyToken, (request, response) => {
+  curationLikeAction(request, response);
+});
+
+router.post("/unlike", verifyToken, (request, response) => {
+  curationUnlikeAction(request, response);
 });

@@ -6,9 +6,12 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import { Block } from "./Block";
 import { User } from "./User";
+import { Like } from "./Like";
 
 @Entity()
 export class Curation {
@@ -26,6 +29,12 @@ export class Curation {
 
   @Column({ nullable: true })
   description: string;
+
+  @Column({ default: 0 })
+  like_count: 0;
+
+  @OneToMany(() => Like, (like) => like.curation)
+  likes: Like;
 
   @ManyToOne(() => User, (user) => user.curations)
   created_by: User;

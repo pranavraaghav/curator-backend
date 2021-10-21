@@ -6,9 +6,11 @@ import {
   OneToMany,
   BeforeInsert,
   BeforeUpdate,
+  ManyToMany,
 } from "typeorm";
 import { Curation } from "./Curation";
 import * as bcrypt from "bcrypt";
+import { Like } from "./Like";
 
 @Entity()
 export class User {
@@ -35,6 +37,9 @@ export class User {
 
   @OneToMany(() => Curation, (curation) => curation.created_by)
   curations: Curation;
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like;
 
   @BeforeInsert()
   async hashPassword() {
