@@ -133,6 +133,48 @@ paths:
                   message:
                     type: string
                     example: "Internal server error"
+  /user/curations:
+    get:
+      tags:
+        - "User"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Retrieved all curations belonging to user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 1231e386-5af5-426c-9118-5998d30c61c4
+                    created_at:
+                      type: string
+                      example: "2021-10-21T23:07:12.839Z"
+                    title:
+                      type: string
+                      example: This will be the title of the curation
+                    description:
+                      type: string
+                      example: This will talk more about the curation
+                    blocks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            example: This will be the title of the block
+                          description:
+                            type: string
+                            example: This will talk more about the description
+                          url:
+                            type: string
+                            example: https://linktowebsite.com/coolvideo
 
   /curation:
     post:

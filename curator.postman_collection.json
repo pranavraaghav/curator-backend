@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\":\"testuser2\",\n    \"email\":\"testuser@gmail.com\",\n    \"password\":\"password\"\n}",
+					"raw": "{\n    \"username\":\"testuser3\",\n    \"email\":\"testuser3@gmail.com\",\n    \"password\":\"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -251,6 +251,34 @@
 					"path": [
 						"curation",
 						"unlike"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user/curations",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"curations"
 					]
 				}
 			},
