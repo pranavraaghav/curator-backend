@@ -257,7 +257,7 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Get all of User's Curations",
 			"request": {
 				"auth": {
 					"type": "bearer",
