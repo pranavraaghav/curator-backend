@@ -191,10 +191,10 @@ paths:
               properties:
                 title:
                   type: string
-                  example: This will be the title of the curation
+                  example: This will be the title of the Curation
                 description:
                   type: string
-                  example: This will talk more about the curation
+                  example: This will talk more about the Curation
                 blocks:
                   type: array
                   items:
@@ -202,10 +202,10 @@ paths:
                     properties:
                       title:
                         type: string
-                        example: This will be the title of the curation
+                        example: This will be the title of the Block
                       description:
                         type: string
-                        example: This will talk more about the curation
+                        example: This will talk more about the Block
                       url:
                         type: string
                         example: https://linktowebsite.com/coolvideo
@@ -260,10 +260,10 @@ paths:
                   example: 1231e386-5af5-426c-9118-5998d30c61c4
                 title:
                   type: string
-                  example: This will be the title of the curation
+                  example: This will be the title of the Curation
                 description:
                   type: string
-                  example: This will talk more about the curation
+                  example: This will talk more about the Curation
                 blocks:
                   type: array
                   items:
@@ -271,10 +271,10 @@ paths:
                     properties:
                       title:
                         type: string
-                        example: This will be the title of the curation
+                        example: This will be the title of the Block
                       description:
                         type: string
-                        example: This will talk more about the curation
+                        example: This will talk more about the Block
                       url:
                         type: string
                         example: https://linktowebsite.com/coolvideo
@@ -414,10 +414,10 @@ paths:
                     example: "2021-10-13T12:34:08.634Z"
                   title:
                     type: string
-                    example: This will be the title of the curation
+                    example: This will be the title of the Curation
                   description:
                     type: string
-                    example: This will talk more about the curation
+                    example: This will talk more about the Curation
                   blocks:
                     type: array
                     items:
@@ -425,10 +425,10 @@ paths:
                       properties:
                         title:
                           type: string
-                          example: This will be the title of the curation
+                          example: This will be the title of the Block
                         description:
                           type: string
-                          example: This will talk more about the curation
+                          example: This will talk more about the Block
                         url:
                           type: string
                           example: http://linktowebsite.com/coolvideo
