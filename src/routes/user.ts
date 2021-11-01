@@ -6,14 +6,6 @@ import { verifyToken } from "../middleware/jwt";
 
 export const router = Router();
 
-router.post("/signup", (request, response) => {
-  userPostSignupAction(request, response);
-});
-
-router.post("/login", (request, response) => {
-  userPostLoginAction(request, response);
-});
-
-router.get("/curations", verifyToken, (request, response) => {
-  userGetAllCurationAction(request, response);
-});
+router.post("/signup", userPostSignupAction);
+router.post("/login", userPostLoginAction);
+router.get("/curations", verifyToken, userGetAllCurationAction);

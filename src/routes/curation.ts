@@ -9,26 +9,10 @@ import { curationUnlikeAction } from "../controller/curationUnlikeAction";
 
 export const router = Router();
 
-router.get("/", (request, response) => {
-  curationGetAction(request, response);
-});
+router.get("/", curationGetAction);
+router.post("/", verifyToken, curationPostCreateAction);
+router.put("/", verifyToken, curationPutUpdateAction);
+router.delete("/", verifyToken, curationDeleteAction);
 
-router.post("/", verifyToken, (request, response) => {
-  curationPostCreateAction(request, response);
-});
-
-router.put("/", verifyToken, (request, response) => {
-  curationPutUpdateAction(request, response);
-});
-
-router.delete("/", verifyToken, (request, response) => {
-  curationDeleteAction(request, response);
-});
-
-router.post("/like", verifyToken, (request, response) => {
-  curationLikeAction(request, response);
-});
-
-router.post("/unlike", verifyToken, (request, response) => {
-  curationUnlikeAction(request, response);
-});
+router.post("/like", verifyToken, curationLikeAction);
+router.post("/unlike", verifyToken, curationUnlikeAction);
