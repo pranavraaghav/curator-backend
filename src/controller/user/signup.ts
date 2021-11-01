@@ -1,16 +1,22 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import Joi from "joi";
+import * as dotenv from "dotenv";
+import { User } from "../../entity/User";
 import * as jwt from "jsonwebtoken";
-import { User } from "../entity/User";
 
-export async function userPostLoginAction(
+dotenv.config();
+
+// TODO: Implement password and password hashing
+
+export async function userSignup(
   request: Request,
   response: Response
 ) {
   // request validation
   const { value, error } = Joi.object({
     username: Joi.string().required(),
+    email: Joi.string().email().required(),
     password: Joi.string().required(),
   }).validate(request.body);
   if (error != null) {
@@ -18,17 +24,17 @@ export async function userPostLoginAction(
     return;
   }
 
-  const { username, password } = value;
+  const { email, username, password } = value;
 
   try {
-    var user = await getManager()
+    const userWithSameUsername = await getManager()
       .getRepository(User)
       .createQueryBuilder("user")
       .where("user.username = :username", { username: username })
       .getOne();
-    if (!user) {
-      response.status(400).send({
-        message: "Username or password is incorrect",
+    if (userWithSameUsername) {
+      response.status(403).send({
+        message: "username taken",
       });
       return;
     }
@@ -37,11 +43,16 @@ export async function userPostLoginAction(
     return;
   }
 
-  // validate
-  if ((await user.validatePassword(password)) === false) {
-    response.status(400).send({
-      message: "Username or password is incorrect",
-    });
+  // creating new entry
+  const user = new User();
+  user.username = username;
+  user.email = email;
+  user.password = password;
+
+  try {
+    var createdUser = await getManager().getRepository(User).save(user);
+  } catch (error) {
+    response.status(500).send(error);
     return;
   }
 
@@ -54,10 +65,10 @@ export async function userPostLoginAction(
     return;
   }
 
-  const token = jwt.sign({ id: user.id }, secret, { expiresIn: "30d" });
+  const token = jwt.sign({ id: createdUser.id }, secret, { expiresIn: "30d" });
 
-  response.status(200).send({
-    message: "Validation successfull",
+  response.status(201).send({
+    message: "User created successfully",
     jwt: token,
     token_type: "Bearer",
   });

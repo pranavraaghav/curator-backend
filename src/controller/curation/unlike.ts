@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { getConnection, getManager } from "typeorm";
 import Joi from "joi";
-import { User } from "../entity/User";
-import { Curation } from "../entity/Curation";
-import { Like } from "../entity/Like";
+import { Like } from "../../entity/Like";
+import { Curation } from "../../entity/Curation";
 
-export async function curationLikeAction(request: Request, response: Response) {
+export async function curationUnlike(
+  request: Request,
+  response: Response
+) {
   // request validation
   const { value, error } = Joi.object({
     user_id: Joi.string().uuid().required(),
@@ -18,9 +20,8 @@ export async function curationLikeAction(request: Request, response: Response) {
 
   const { user_id, curation_id } = value;
 
-  // Checking for pre-existing like
   try {
-    const existingLike = await getConnection()
+    var like = await getConnection()
       .getRepository(Like)
       .createQueryBuilder("like")
       .leftJoinAndSelect("like.curation", "curation")
@@ -30,22 +31,9 @@ export async function curationLikeAction(request: Request, response: Response) {
         curation_id: curation_id,
       })
       .getOne();
-    if (existingLike) {
-      response.status(400).json({
-        message: "You cannot like the same curation twice",
-      });
-      return;
-    }
-  } catch (error) {
-    response.status(500).send(error);
-    return;
-  }
-
-  try {
-    var user = await getManager().getRepository(User).findOne(user_id);
-    if (!user) {
+    if (!like) {
       response.status(404).json({
-        message: "Invalid user id",
+        message: "This curation was not liked by the user previously",
       });
       return;
     }
@@ -69,13 +57,11 @@ export async function curationLikeAction(request: Request, response: Response) {
     return;
   }
 
-  const like = new Like();
-  curation.like_count += 1;
-  like.user = user;
-  like.curation = curation;
+  curation.like_count -= 1;
 
   try {
-    await getManager().getRepository(Like).save(like);
+    await getManager().getRepository(Curation).save(curation);
+    await getManager().getRepository(Like).remove(like);
   } catch (error) {
     response.status(500).send(error);
     return;

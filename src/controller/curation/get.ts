@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import Joi from "joi";
-import { Curation } from "../entity/Curation";
+import { Curation } from "../../entity/Curation";
 
-export async function curationGetAction(request: Request, response: Response) {
+export async function curationGet(request: Request, response: Response) {
   // request validation
   const { value, error } = Joi.object({
     curation_id: Joi.string().uuid().required(),

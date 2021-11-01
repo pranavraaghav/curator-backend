@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
 import { getConnection, getManager } from "typeorm";
 import Joi from "joi";
-import { Like } from "../entity/Like";
-import { Curation } from "../entity/Curation";
+import { User } from "../../entity/User";
+import { Curation } from "../../entity/Curation";
+import { Like } from "../../entity/Like";
 
-export async function curationUnlikeAction(
-  request: Request,
-  response: Response
-) {
+export async function curationLike(request: Request, response: Response) {
   // request validation
   const { value, error } = Joi.object({
     user_id: Joi.string().uuid().required(),
@@ -20,8 +18,9 @@ export async function curationUnlikeAction(
 
   const { user_id, curation_id } = value;
 
+  // Checking for pre-existing like
   try {
-    var like = await getConnection()
+    const existingLike = await getConnection()
       .getRepository(Like)
       .createQueryBuilder("like")
       .leftJoinAndSelect("like.curation", "curation")
@@ -31,9 +30,22 @@ export async function curationUnlikeAction(
         curation_id: curation_id,
       })
       .getOne();
-    if (!like) {
+    if (existingLike) {
+      response.status(400).json({
+        message: "You cannot like the same curation twice",
+      });
+      return;
+    }
+  } catch (error) {
+    response.status(500).send(error);
+    return;
+  }
+
+  try {
+    var user = await getManager().getRepository(User).findOne(user_id);
+    if (!user) {
       response.status(404).json({
-        message: "This curation was not liked by the user previously",
+        message: "Invalid user id",
       });
       return;
     }
@@ -57,11 +69,13 @@ export async function curationUnlikeAction(
     return;
   }
 
-  curation.like_count -= 1;
+  const like = new Like();
+  curation.like_count += 1;
+  like.user = user;
+  like.curation = curation;
 
   try {
-    await getManager().getRepository(Curation).save(curation);
-    await getManager().getRepository(Like).remove(like);
+    await getManager().getRepository(Like).save(like);
   } catch (error) {
     response.status(500).send(error);
     return;
