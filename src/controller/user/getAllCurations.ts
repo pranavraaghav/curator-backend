@@ -22,15 +22,14 @@ export async function userGetAllCurations(
     var curations = await getManager()
       .getRepository(Curation)
       .createQueryBuilder("curation")
-      .leftJoin("curation.blocks", "blocks")
       .leftJoin("curation.created_by", "user")
       .select([
         "curation.id",
         "curation.created_at",
         "curation.title",
         "curation.description",
+        "curation.like_count"
       ])
-      .addSelect(["blocks.title", "blocks.description", "blocks.url"])
       .where("user.id = :user_id", { user_id: user_id })
       .getMany();
     if (!curations) {

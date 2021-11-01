@@ -161,20 +161,9 @@ paths:
                     description:
                       type: string
                       example: This will talk more about the curation
-                    blocks:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          title:
-                            type: string
-                            example: This will be the title of the block
-                          description:
-                            type: string
-                            example: This will talk more about the description
-                          url:
-                            type: string
-                            example: https://linktowebsite.com/coolvideo
+                    like_count: 
+                      type: string
+                      example: 0
 
   /curation:
     post:
