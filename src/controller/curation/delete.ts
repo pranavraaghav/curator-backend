@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import Joi from "joi";
-import { Curation } from "../entity/Curation";
+import { Curation } from "../../entity/Curation";
 
-export async function curationDeleteAction(
+export async function curationDelete(
   request: Request,
   response: Response
 ) {

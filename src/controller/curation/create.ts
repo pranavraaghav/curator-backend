@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import Joi from "joi";
-import { User } from "../entity/User";
-import { Curation } from "../entity/Curation";
-import { Block } from "../entity/Block";
+import { User } from "../../entity/User";
+import { Curation } from "../../entity/Curation";
+import { Block } from "../../entity/Block";
 
-export async function curationPostCreateAction(
+export async function curationCreate(
   request: Request,
   response: Response
 ) {

@@ -1,34 +1,18 @@
 import { Router } from "express";
 import { verifyToken } from "../middleware/jwt";
-import { curationDeleteAction } from "../controller/curationDeleteAction";
-import { curationPostCreateAction } from "../controller/curationPostCreateAction";
-import { curationPutUpdateAction } from "../controller/curationPutUpdateAction";
-import { curationGetAction } from "../controller/curationGetAction";
-import { curationLikeAction } from "../controller/curationLikeAction";
-import { curationUnlikeAction } from "../controller/curationUnlikeAction";
+import { curationDelete } from "../controller/curation/delete";
+import { curationCreate } from "../controller/curation/create";
+import { curationUpdate } from "../controller/curation/update";
+import { curationGet } from "../controller/curation/get";
+import { curationLike } from "../controller/curation/like";
+import { curationUnlike } from "../controller/curation/unlike";
 
 export const router = Router();
 
-router.get("/", (request, response) => {
-  curationGetAction(request, response);
-});
+router.get("/", curationGet);
+router.post("/", verifyToken, curationCreate);
+router.put("/", verifyToken, curationUpdate);
+router.delete("/", verifyToken, curationDelete);
 
-router.post("/", verifyToken, (request, response) => {
-  curationPostCreateAction(request, response);
-});
-
-router.put("/", verifyToken, (request, response) => {
-  curationPutUpdateAction(request, response);
-});
-
-router.delete("/", verifyToken, (request, response) => {
-  curationDeleteAction(request, response);
-});
-
-router.post("/like", verifyToken, (request, response) => {
-  curationLikeAction(request, response);
-});
-
-router.post("/unlike", verifyToken, (request, response) => {
-  curationUnlikeAction(request, response);
-});
+router.post("/like", verifyToken, curationLike);
+router.post("/unlike", verifyToken, curationUnlike);

@@ -7,6 +7,4 @@ export const router = Router();
 
 router.use("/user", userRouter);
 router.use("/curation", curationRouter);
-router.get("/", (request, response) => {
-  baseAction(request, response);
-});
+router.get("/", baseAction);
