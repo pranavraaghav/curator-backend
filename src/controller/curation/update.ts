@@ -13,11 +13,11 @@ export async function curationUpdate(
     user_id: Joi.string().uuid().required(),
     curation_id: Joi.string().uuid().required(),
     title: Joi.string(),
-    description: Joi.string(),
+    description: Joi.string().allow(""),
     blocks: Joi.array().items(
       Joi.object({
         title: Joi.string().required(),
-        description: Joi.string(),
+        description: Joi.string().allow(""),
         url: Joi.string(),
       })
     ),

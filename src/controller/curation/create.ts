@@ -13,11 +13,11 @@ export async function curationCreate(
   const { value, error } = Joi.object({
     user_id: Joi.string().uuid().required(),
     title: Joi.string().required(),
-    description: Joi.string(),
+    description: Joi.string().allow(""),
     blocks: Joi.array().items(
       Joi.object({
         title: Joi.string().required(),
-        description: Joi.string(),
+        description: Joi.string().allow(""),
         url: Joi.string(),
       })
     ),
