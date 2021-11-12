@@ -18,7 +18,7 @@ export async function curationCreate(
       Joi.object({
         title: Joi.string().required(),
         description: Joi.string().allow(""),
-        url: Joi.string(),
+        url: Joi.string().allow(""),
       })
     ),
   }).validate(request.body);
