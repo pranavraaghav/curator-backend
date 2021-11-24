@@ -162,7 +162,7 @@ paths:
                       type: string
                       example: This will talk more about the curation
                     like_count: 
-                      type: string
+                      type: number
                       example: 0
 
   /curation:
