@@ -20,6 +20,7 @@ export async function curationGet(request: Request, response: Response) {
       .getRepository(Curation)
       .createQueryBuilder("curation")
       .leftJoin("curation.blocks", "blocks")
+      .leftJoin("curation.created_by", "created_by")
       .select([
         "curation.id",
         "curation.created_at",
@@ -27,6 +28,7 @@ export async function curationGet(request: Request, response: Response) {
         "curation.description",
         "curation.like_count",
       ])
+      .addSelect(["created_by.username", "created_by.id"])
       .addSelect(["blocks.title", "blocks.description", "blocks.url"])
       .where("curation.id = :curation_id", { curation_id: curation_id })
       .getOne();

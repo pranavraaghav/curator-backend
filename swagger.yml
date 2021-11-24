@@ -410,6 +410,15 @@ paths:
                   description:
                     type: string
                     example: This will talk more about the Curation
+                  created_by:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 021e5218-2da5-42b9-a081-84fc99ba08c7
+                      username: 
+                        type: string
+                        example: smartfellow
                   blocks:
                     type: array
                     items:
