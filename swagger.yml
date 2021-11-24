@@ -404,6 +404,9 @@ paths:
                   title:
                     type: string
                     example: This will be the title of the Curation
+                  like_count:
+                    type: number
+                    example: 3
                   description:
                     type: string
                     example: This will talk more about the Curation

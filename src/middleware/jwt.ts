@@ -18,6 +18,8 @@ export const verifyToken = (
   }
 
   try {
+    // TODO: This really needs to be made better OR
+    // at least add some error handling to let frontend know they did "Bearer" + jwt instead of "Bearer " + jwt
     const token = tokenHeader.split(" ")[1];
     const secret: string = process.env.SECRET!;
     try {

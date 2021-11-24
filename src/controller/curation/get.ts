@@ -25,6 +25,7 @@ export async function curationGet(request: Request, response: Response) {
         "curation.created_at",
         "curation.title",
         "curation.description",
+        "curation.like_count",
       ])
       .addSelect(["blocks.title", "blocks.description", "blocks.url"])
       .where("curation.id = :curation_id", { curation_id: curation_id })
